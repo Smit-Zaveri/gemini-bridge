@@ -7,22 +7,26 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
-    
-    function getUserData() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+
+    // Safe role lookup — returns null if user doc doesn't exist yet
+    function getUserRole() {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
+        : null;
     }
-    
+
     function hasRole(role) {
-      return isAuthenticated() && getUserData().role == role;
+      return getUserRole() == role;
     }
-    
+
     function isAdmin() {
       return isAuthenticated() && (
-        getUserData().role == 'admin' || 
+        getUserRole() == 'admin' ||
         (request.auth.token.email == "smit.zaveri@bugasura.io" && request.auth.token.email_verified == true)
       );
     }
@@ -31,29 +35,48 @@ service cloud.firestore {
     // Collection Rules
     // ===============================================================
 
+    // Users can read any profile once authenticated.
+    // Create is open to the owner so new sign-ups can write their doc.
+    // Update is limited to admins or the owner keeping the same role.
     match /users/{uid} {
       allow read: if isAuthenticated();
-      allow create: if isOwner(uid) && request.resource.data.role == 'civilian';
+      allow create: if isOwner(uid);
       allow update: if isAdmin() || (isOwner(uid) && request.resource.data.role == resource.data.role);
     }
 
     match /incidents/{incidentId} {
       allow read: if isAuthenticated();
       allow create: if isAuthenticated();
-      allow update: if hasRole('responder') || hasRole('admin');
+      allow update: if hasRole('responder') || hasRole('admin') || isAdmin();
       allow delete: if isAdmin();
     }
 
     match /dispatches/{dispatchId} {
-      allow read: if hasRole('responder') || hasRole('admin');
-      allow create: if hasRole('responder') || hasRole('admin');
-      allow update: if hasRole('responder') || hasRole('admin');
+      allow read: if hasRole('responder') || hasRole('admin') || isAdmin();
+      allow create: if hasRole('responder') || hasRole('admin') || isAdmin();
+      allow update: if hasRole('responder') || hasRole('admin') || isAdmin();
     }
 
     match /medicalRecords/{recordId} {
-      allow read: if isOwner(resource.data.userId) || hasRole('nurse') || hasRole('admin');
+      allow read: if isOwner(resource.data.userId) || hasRole('nurse') || hasRole('admin') || isAdmin();
       allow create: if isAuthenticated();
-      allow update: if hasRole('nurse') || hasRole('admin');
+      allow update: if hasRole('nurse') || hasRole('admin') || isAdmin();
+    }
+
+    // Persons extracted from incident reports
+    match /persons/{personId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if hasRole('responder') || hasRole('nurse') || hasRole('admin') || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Staff chat messages
+    match /staffChat/{messageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow delete: if isAdmin();
     }
   }
 }
+

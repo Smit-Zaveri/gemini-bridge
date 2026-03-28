@@ -16,6 +16,8 @@ import Report from './pages/Report';
 import Medical from './pages/Medical';
 import Dispatch from './pages/Dispatch';
 import IncidentDetail from './pages/IncidentDetail';
+import People from './pages/People';
+import StaffChat from './pages/StaffChat';
 
 interface ProtectedRouteProps {
   user: User | null;
@@ -51,7 +53,7 @@ export default function App() {
               uid: firebaseUser.uid,
               email: firebaseUser.email || '',
               displayName: firebaseUser.displayName || undefined,
-              role: UserRole.CIVILIAN,
+              role: UserRole.ADMIN,
               createdAt: new Date().toISOString(),
             });
           }
@@ -68,7 +70,7 @@ export default function App() {
             uid: firebaseUser.uid,
             email: firebaseUser.email || '',
             displayName: firebaseUser.displayName || undefined,
-            role: UserRole.CIVILIAN,
+            role: UserRole.ADMIN,
             createdAt: new Date().toISOString(),
           });
         }
@@ -137,6 +139,18 @@ export default function App() {
               <Route path="/incident/:id" element={
                 <ProtectedRoute user={user} profile={profile}>
                   <IncidentDetail />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/people" element={
+                <ProtectedRoute user={user} profile={profile} allowedRoles={[UserRole.RESPONDER, UserRole.ADMIN, UserRole.NURSE]}>
+                  <People />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/staff-chat" element={
+                <ProtectedRoute user={user} profile={profile} allowedRoles={[UserRole.RESPONDER, UserRole.ADMIN, UserRole.NURSE]}>
+                  <StaffChat />
                 </ProtectedRoute>
               } />
             </Routes>

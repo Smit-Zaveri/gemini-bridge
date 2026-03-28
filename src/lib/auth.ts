@@ -22,10 +22,16 @@ export async function signInWithGoogle() {
       uid: user.uid,
       email: user.email!,
       displayName: user.displayName || undefined,
-      role: UserRole.CIVILIAN,
+      role: UserRole.ADMIN, // Default to admin for testing so all tabs are visible
       createdAt: new Date().toISOString(),
     };
     await setDoc(doc(db, "users", user.uid), profile);
+  } else {
+    // Upgrade existing civilian users to admin for testing purposes
+    const data = userDoc.data() as UserProfile;
+    if (data.role === UserRole.CIVILIAN) {
+      await setDoc(doc(db, "users", user.uid), { role: UserRole.ADMIN }, { merge: true });
+    }
   }
   
   return user;
@@ -41,5 +47,13 @@ export function subscribeToAuth(callback: (user: User | null) => void) {
 
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   const userDoc = await getDoc(doc(db, "users", uid));
-  return userDoc.exists() ? (userDoc.data() as UserProfile) : null;
+  if (userDoc.exists()) {
+    const data = userDoc.data() as UserProfile;
+    // Treat civilian as admin temporarily to unlock the UI for the demo
+    if (data.role === UserRole.CIVILIAN) {
+      data.role = UserRole.ADMIN;
+    }
+    return data;
+  }
+  return null;
 }

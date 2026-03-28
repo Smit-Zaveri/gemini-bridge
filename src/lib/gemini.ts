@@ -45,3 +45,19 @@ export async function parseMedicalRecord(files: any[]) {
 
   return response.json();
 }
+
+export async function extractPersons(incidentSummary: string, geminiAnalysis?: any) {
+  const response = await fetch("/api/extract-persons", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ incidentSummary, geminiAnalysis }),
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({ error: "Person extraction failed" }));
+    throw new Error(err.error || "Person extraction failed");
+  }
+
+  return response.json();
+}
+

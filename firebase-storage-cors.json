@@ -1,0 +1,14 @@
+[
+  {
+    "origin": ["http://localhost:3000", "https://gemini-bridge-2458f.web.app", "https://gemini-bridge-2458f.firebaseapp.com"],
+    "method": ["GET", "HEAD", "OPTIONS", "PUT", "POST"],
+    "responseHeader": [
+      "Content-Type",
+      "Authorization",
+      "Content-Length",
+      "User-Agent",
+      "x-goog-resumable"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

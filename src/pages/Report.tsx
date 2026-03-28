@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../lib/firebase";
-import { analyzeIncident } from "../lib/gemini";
+import { analyzeIncident, extractPersons } from "../lib/gemini";
 import { GlassCard } from "../components/ui/GlassCard";
 import { AudioRecorder } from "../components/intake/AudioRecorder";
 import { MediaDropzone } from "../components/intake/MediaDropzone";
@@ -154,6 +154,28 @@ export default function Report() {
       };
 
       const docRef = await addDoc(collection(db, "incidents"), incidentData);
+
+      // Auto-extract persons from the report and save to Firestore
+      try {
+        const extracted = await extractPersons(
+          analysisResult.summary,
+          analysisResult
+        );
+        if (extracted.persons && extracted.persons.length > 0) {
+          for (const person of extracted.persons) {
+            await addDoc(collection(db, "persons"), {
+              ...person,
+              associatedIncidents: [docRef.id],
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            });
+          }
+        }
+      } catch (extractErr) {
+        // Non-critical — don't block the user if extraction fails
+        console.warn("Person extraction failed (non-critical):", extractErr);
+      }
+
       navigate(`/incident/${docRef.id}`);
     } catch (error: any) {
       console.error("Submission failed:", error);

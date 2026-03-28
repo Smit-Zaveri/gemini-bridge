@@ -5,7 +5,9 @@ import {
   Stethoscope, 
   Send, 
   LogOut,
-  User as UserIcon
+  User as UserIcon,
+  Users,
+  MessageSquare
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { UserRole } from "../../types";
@@ -21,6 +23,8 @@ export function Sidebar({ role, onLogout }: SidebarProps) {
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard", roles: [UserRole.RESPONDER, UserRole.ADMIN] },
     { name: "Report", icon: FileWarning, path: "/report", roles: [UserRole.CIVILIAN, UserRole.RESPONDER, UserRole.ADMIN] },
+    { name: "People", icon: Users, path: "/people", roles: [UserRole.RESPONDER, UserRole.ADMIN, UserRole.NURSE] },
+    { name: "Staff Chat", icon: MessageSquare, path: "/staff-chat", roles: [UserRole.RESPONDER, UserRole.ADMIN, UserRole.NURSE] },
     { name: "Medical", icon: Stethoscope, path: "/medical", roles: [UserRole.NURSE, UserRole.ADMIN] },
     { name: "Dispatch", icon: Send, path: "/dispatch", roles: [UserRole.RESPONDER, UserRole.ADMIN] },
   ];
