@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information including role.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["civilian", "responder", "nurse", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Incident": {
+      "title": "Incident Report",
+      "description": "Details of an emergency incident.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "reportedBy": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "processing", "verified", "dispatched", "resolved"] },
+        "criticalityScore": { "type": "number" },
+        "criticalityLevel": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+        "location": { "type": "object" },
+        "locationAddress": { "type": "string" },
+        "emergencyType": { "type": "string" },
+        "summary": { "type": "string" },
+        "geminiAnalysis": { "type": "object" },
+        "mediaUrls": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reportedBy", "status", "createdAt"]
+    },
+    "Dispatch": {
+      "title": "Dispatch Action",
+      "description": "A dispatch communication for an incident.",
+      "type": "object",
+      "properties": {
+        "incidentId": { "type": "string" },
+        "service": { "type": "string" },
+        "status": { "type": "string", "enum": ["drafted", "confirmed", "sent", "failed"] },
+        "message": { "type": "string" },
+        "confirmedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["incidentId", "service", "status"]
+    },
+    "MedicalRecord": {
+      "title": "Medical Record",
+      "description": "Parsed medical information from documents.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "fhirPatient": { "type": "object" },
+        "mustKnow": { "type": "object" },
+        "fullHistory": { "type": "object" },
+        "sourceDocuments": { "type": "array", "items": { "type": "string" } },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "lastUpdated"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "User profiles" },
+    "/incidents/{incidentId}": { "schema": "Incident", "description": "Incident reports" },
+    "/dispatches/{dispatchId}": { "schema": "Dispatch", "description": "Dispatch actions" },
+    "/medicalRecords/{recordId}": { "schema": "MedicalRecord", "description": "Medical records" }
+  }
+}

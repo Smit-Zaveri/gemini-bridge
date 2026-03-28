@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-void: #050811;
+  --color-bg-base: #090d1a;
+  --color-bg-surface: #0d1424;
+  --color-bg-elevated: #131c30;
+  --color-bg-glass: rgba(13, 20, 36, 0.6);
+
+  --color-brand-primary: #3b82f6;
+  --color-brand-glow: #60a5fa;
+  --color-brand-dim: #1d4ed8;
+
+  --color-crit-low: #22c55e;
+  --color-crit-medium: #f59e0b;
+  --color-crit-high: #f97316;
+  --color-crit-critical: #ef4444;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-base text-slate-200 font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-bg-glass backdrop-blur-xl border border-white/5 rounded-2xl shadow-2xl;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .btn-primary {
+    @apply bg-brand-primary hover:bg-brand-glow text-white font-semibold py-2 px-6 rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-outline {
+    @apply border border-white/10 hover:bg-white/5 text-white font-semibold py-2 px-6 rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .input-field {
+    @apply bg-bg-elevated border border-white/5 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all;
+  }
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 20px 10px rgba(239, 68, 68, 0.2); }
+}
+
+.animate-pulse-red {
+  animation: pulse-red 2s infinite;
+}

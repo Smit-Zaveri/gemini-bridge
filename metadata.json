@@ -1,0 +1,9 @@
+{
+  "name": "Gemini Bridge",
+  "description": "Emergency intelligence platform converting chaotic multimodal inputs into structured actionable data for first responders.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
