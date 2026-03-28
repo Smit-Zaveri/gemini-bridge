@@ -1,12 +1,19 @@
 import { Link } from "react-router-dom";
 import { User as UserIcon, Bell, Search } from "lucide-react";
 import { UserProfile } from "../../types";
+import { User } from "firebase/auth";
 
 interface NavbarProps {
   user?: UserProfile | null;
+  firebaseUser?: User | null;
 }
 
-export function Navbar({ user }: NavbarProps) {
+export function Navbar({ user, firebaseUser }: NavbarProps) {
+  // Use Firestore profile displayName first, then fall back to Firebase Auth displayName
+  const displayName = user?.displayName || firebaseUser?.displayName || "Guest";
+  const role = user?.role || "Visitor";
+  const uid = user?.uid || firebaseUser?.uid || "guest";
+
   return (
     <header className="h-20 border-b-4 border-text-main bg-brand-primary flex items-center justify-between px-8 sticky top-0 z-50">
       <div className="flex items-center gap-4 flex-1">
@@ -29,12 +36,12 @@ export function Navbar({ user }: NavbarProps) {
 
         <div className="flex items-center gap-3 pl-6 border-l-4 border-text-main h-10">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-black text-text-main leading-none">{user?.displayName || "Guest"}</p>
-            <p className="text-xs font-bold text-text-main/80 capitalize mt-1">{user?.role || "Visitor"}</p>
+            <p className="text-sm font-black text-text-main leading-none">{displayName}</p>
+            <p className="text-xs font-bold text-text-main/80 capitalize mt-1">{role}</p>
           </div>
           <div className="w-12 h-12 bg-bg-surface border-4 border-text-main shadow-[2px_2px_0px_0px_#1C293C] flex items-center justify-center overflow-hidden">
-            {user?.displayName ? (
-              <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`} alt="avatar" className="w-full h-full object-cover" />
+            {displayName !== "Guest" ? (
+              <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${uid}`} alt="avatar" className="w-full h-full object-cover" />
             ) : (
               <UserIcon className="w-6 h-6 text-text-main stroke-[3]" />
             )}

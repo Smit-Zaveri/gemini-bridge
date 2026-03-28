@@ -43,17 +43,34 @@ export default function App() {
       if (firebaseUser) {
         try {
           const userProfile = await getUserProfile(firebaseUser.uid);
-          setProfile(userProfile);
+          if (userProfile) {
+            setProfile(userProfile);
+          } else {
+            // User exists in Auth but not in Firestore — build a fallback profile
+            setProfile({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              displayName: firebaseUser.displayName || undefined,
+              role: UserRole.CIVILIAN,
+              createdAt: new Date().toISOString(),
+            });
+          }
         } catch (error: any) {
-          // Firestore may be offline (e.g. sandboxed environment or no network).
-          // Don't block the UI — the user is authenticated, profile defaults to null.
+          // Firestore may be offline — build fallback profile from Auth data
           const isOffline =
             error?.code === 'unavailable' ||
             (error?.message ?? '').toLowerCase().includes('offline');
           if (!isOffline) {
             console.error('Failed to load user profile:', error);
           }
-          setProfile(null);
+          // Still set a usable profile so UI isn't broken
+          setProfile({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            displayName: firebaseUser.displayName || undefined,
+            role: UserRole.CIVILIAN,
+            createdAt: new Date().toISOString(),
+          });
         }
       } else {
         setProfile(null);
@@ -87,7 +104,7 @@ export default function App() {
         {user && <Sidebar role={profile?.role} onLogout={handleLogout} />}
         
         <main className="flex-1 flex flex-col min-w-0">
-          {user && <Navbar user={profile} />}
+          {user && <Navbar user={profile} firebaseUser={user} />}
           
           <div className={user ? "p-8" : ""}>
             <Routes>

@@ -88,38 +88,59 @@ export default function Report() {
   const handleSubmit = async () => {
     if (!analysisResult) return;
 
+    // Ensure user is authenticated before submitting
+    if (!auth.currentUser) {
+      alert("You must be signed in to submit a report. Please sign in and try again.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const mediaUrls: string[] = [];
-      
-      // Upload audio if exists
+      // Upload all media files in parallel for speed
+      const uploadPromises: Promise<string>[] = [];
+
       if (audioBlob) {
-        try {
-          const audioRef = ref(storage, `incidents/${Date.now()}_audio.webm`);
-          await uploadBytes(audioRef, audioBlob);
-          const url = await getDownloadURL(audioRef);
-          mediaUrls.push(url);
-        } catch (storageErr) {
-          console.error("Audio upload failed:", storageErr);
-          throw new Error("Failed to upload audio evidence. This might be a CORS configuration issue in Firebase Storage.");
-        }
+        uploadPromises.push(
+          (async () => {
+            const audioRef = ref(storage, `incidents/${Date.now()}_audio.webm`);
+            await uploadBytes(audioRef, audioBlob);
+            return getDownloadURL(audioRef);
+          })()
+        );
       }
 
-      // Upload files if exist
       for (const file of files) {
+        uploadPromises.push(
+          (async () => {
+            const fileRef = ref(storage, `incidents/${Date.now()}_${file.name}`);
+            await uploadBytes(fileRef, file);
+            return getDownloadURL(fileRef);
+          })()
+        );
+      }
+
+      // Wait for all uploads in parallel (much faster than sequential)
+      let mediaUrls: string[] = [];
+      if (uploadPromises.length > 0) {
         try {
-          const fileRef = ref(storage, `incidents/${Date.now()}_${file.name}`);
-          await uploadBytes(fileRef, file);
-          const url = await getDownloadURL(fileRef);
-          mediaUrls.push(url);
-        } catch (storageErr) {
-          console.error("File upload failed:", storageErr);
-          throw new Error(`Failed to upload file: ${file.name}. This might be a CORS configuration issue in Firebase Storage.`);
+          mediaUrls = await Promise.all(uploadPromises);
+        } catch (storageErr: any) {
+          console.error("Media upload failed:", storageErr);
+          // Continue without media — better to save the incident than lose the report
+          const proceed = window.confirm(
+            "Some media files failed to upload. Do you want to submit the report without the media attachments?"
+          );
+          if (!proceed) {
+            setIsSubmitting(false);
+            return;
+          }
         }
       }
 
       const incidentData = {
-        reportedBy: auth.currentUser?.uid,
+        reportedBy: auth.currentUser.uid,
+        reportedByEmail: auth.currentUser.email || "",
+        reportedByName: auth.currentUser.displayName || "",
         status: IncidentStatus.PENDING,
         criticalityScore: analysisResult.urgency?.level === 'critical' ? 90 : analysisResult.urgency?.level === 'high' ? 70 : 40,
         criticalityLevel: analysisResult.urgency?.level || CriticalityLevel.MEDIUM,
@@ -136,7 +157,13 @@ export default function Report() {
       navigate(`/incident/${docRef.id}`);
     } catch (error: any) {
       console.error("Submission failed:", error);
-      alert(error.message || "Failed to submit incident. Please try again.");
+      if (error.code === "permission-denied") {
+        alert("Permission denied: You don't have access to submit reports. Please contact an administrator.");
+      } else if (error.code === "unavailable" || error.message?.includes("offline")) {
+        alert("Network issue: The report has been saved locally and will sync when you're back online.");
+      } else {
+        alert(error.message || "Failed to submit incident. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
