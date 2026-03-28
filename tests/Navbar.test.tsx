@@ -22,7 +22,8 @@ describe('Navbar Component', () => {
       uid: 'user123',
       displayName: 'Alice Responder',
       email: 'alice@example.com',
-      role: 'responder' as any
+      role: 'responder' as any,
+      createdAt: new Date().toISOString()
     };
 
     render(
