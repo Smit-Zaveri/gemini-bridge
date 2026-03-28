@@ -14,6 +14,7 @@ export function Navbar({ user }: NavbarProps) {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input 
             type="text" 
+            aria-label="Search incidents, victims, or locations"
             placeholder="Search incidents, victims, or locations..." 
             className="w-full bg-bg-elevated border border-white/5 rounded-full pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all"
           />
@@ -21,8 +22,8 @@ export function Navbar({ user }: NavbarProps) {
       </div>
 
       <div className="flex items-center gap-6">
-        <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
-          <Bell className="w-5 h-5" />
+        <button aria-label="Notifications" className="relative p-2 text-slate-400 hover:text-white transition-colors">
+          <Bell className="w-5 h-5" aria-hidden="true" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-bg-base"></span>
         </button>
 

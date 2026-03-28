@@ -69,6 +69,7 @@ export function MediaDropzone({ onFilesSelected, onClear }: MediaDropzoneProps) 
               </div>
               <button 
                 onClick={(e) => { e.stopPropagation(); removeFile(i); }}
+                aria-label={`Remove ${file.name}`}
                 className="p-1 text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X className="w-4 h-4" />

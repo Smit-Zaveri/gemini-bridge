@@ -81,6 +81,7 @@ export function AudioRecorder({ onRecordingComplete, onClear }: AudioRecorderPro
         {!audioBlob && !isRecording ? (
           <button 
             onClick={startRecording}
+            aria-label="Start recording"
             className="w-16 h-16 bg-brand-primary rounded-full flex items-center justify-center shadow-lg shadow-brand-primary/20 hover:scale-110 transition-transform"
           >
             <Mic className="w-8 h-8 text-white" />
@@ -105,6 +106,7 @@ export function AudioRecorder({ onRecordingComplete, onClear }: AudioRecorderPro
             <div className="flex items-center gap-4">
               <button 
                 onClick={clearRecording}
+                aria-label="Clear recording"
                 className="p-2 text-slate-400 hover:text-red-400 transition-colors"
               >
                 <Trash2 className="w-5 h-5" />
