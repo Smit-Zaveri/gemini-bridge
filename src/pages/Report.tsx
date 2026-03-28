@@ -146,17 +146,17 @@ export default function Report() {
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Multimodal Intake</h1>
-          <p className="text-slate-400 mt-1">Report an emergency using voice, images, or text</p>
+          <h1 className="text-3xl font-bold text-text-main uppercase">Multimodal Intake</h1>
+          <p className="text-text-main/60 font-bold mt-1">Report an emergency using voice, images, or text</p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500">
-            <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-main/40">
+            <div className="w-2 h-2 bg-text-main/40 rounded-full"></div>
             Step 1: Input
           </div>
-          <div className="w-8 h-px bg-white/10"></div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-800">
-            <div className="w-2 h-2 bg-slate-800 rounded-full"></div>
+          <div className="w-8 h-px bg-text-main/10"></div>
+          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-text-main">
+            <div className="w-2 h-2 bg-text-main rounded-full"></div>
             Step 2: Analysis
           </div>
         </div>
@@ -166,8 +166,8 @@ export default function Report() {
         {/* Input Controls */}
         <div className="space-y-6">
           <GlassCard className="space-y-6">
-            <div className="flex items-center gap-3 text-white font-bold border-b border-white/5 pb-4">
-              <Mic className="w-5 h-5 text-brand-primary" />
+            <div className="flex items-center gap-3 text-text-main font-black uppercase border-b-4 border-text-main pb-4">
+              <Mic className="w-5 h-5 text-brand-primary fill-brand-primary" />
               Voice Report
             </div>
             <AudioRecorder 
@@ -177,8 +177,8 @@ export default function Report() {
           </GlassCard>
 
           <GlassCard className="space-y-6">
-            <div className="flex items-center gap-3 text-white font-bold border-b border-white/5 pb-4">
-              <ImageIcon className="w-5 h-5 text-brand-primary" />
+            <div className="flex items-center gap-3 text-text-main font-black uppercase border-b-4 border-text-main pb-4">
+              <ImageIcon className="w-5 h-5 text-brand-primary fill-brand-primary" />
               Visual Evidence
             </div>
             <MediaDropzone 
@@ -188,22 +188,22 @@ export default function Report() {
           </GlassCard>
 
           <GlassCard className="space-y-6">
-            <div className="flex items-center gap-3 text-white font-bold border-b border-white/5 pb-4">
-              <FileText className="w-5 h-5 text-brand-primary" />
+            <div className="flex items-center gap-3 text-text-main font-black uppercase border-b-4 border-text-main pb-4">
+              <FileText className="w-5 h-5 text-brand-primary fill-brand-primary" />
               Additional Context
             </div>
             <textarea 
               value={textNote}
               onChange={(e) => setTextNote(e.target.value)}
               placeholder="Type any additional details here..."
-              className="w-full h-32 bg-white/5 border border-white/10 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all resize-none"
+              className="w-full h-32 bg-bg-base border-4 border-text-main p-4 text-sm font-bold focus:outline-none focus:ring-0 focus:-translate-y-1 focus:-translate-x-1 focus:shadow-[4px_4px_0px_0px_#1C293C] transition-all resize-none placeholder:text-text-main/30"
             />
           </GlassCard>
 
           <button 
             onClick={handleAnalyze}
             disabled={isAnalyzing || isSubmitting}
-            className="w-full btn-primary py-4 text-lg flex items-center justify-center gap-3 shadow-xl shadow-brand-primary/20"
+            className="w-full btn-primary py-6 text-xl flex items-center justify-center gap-3 uppercase tracking-wider"
           >
             {isAnalyzing ? (
               <>
@@ -212,7 +212,7 @@ export default function Report() {
               </>
             ) : (
               <>
-                <Zap className="w-6 h-6" />
+                <Zap className="w-6 h-6 fill-text-main" />
                 Analyze with Gemini AI
               </>
             )}
@@ -225,9 +225,9 @@ export default function Report() {
             "h-full min-h-[600px] flex flex-col transition-all duration-500",
             !analysisResult && "opacity-50 grayscale"
           )}>
-            <div className="p-6 border-b border-white/5 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Zap className="w-5 h-5 text-brand-primary" />
+            <div className="p-6 border-b-4 border-text-main flex items-center justify-between">
+              <h2 className="text-xl font-black text-text-main flex items-center gap-2 uppercase">
+                <Zap className="w-5 h-5 text-brand-primary fill-brand-primary" />
                 AI Intelligence Preview
               </h2>
               {analysisResult && (
@@ -240,10 +240,10 @@ export default function Report() {
             <div className="flex-1 p-6 overflow-y-auto space-y-8">
               {!analysisResult ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
-                    <Info className="w-8 h-8 text-slate-600" />
+                  <div className="w-16 h-16 bg-bg-base border-4 border-text-main flex items-center justify-center">
+                    <Info className="w-8 h-8 text-text-main/40" />
                   </div>
-                  <p className="text-slate-500 max-w-xs">
+                  <p className="text-text-main/60 font-bold max-w-xs">
                     Provide input on the left and click "Analyze" to see the AI-generated intelligence report.
                   </p>
                 </div>
@@ -251,26 +251,26 @@ export default function Report() {
                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                   {/* Summary */}
                   <div className="space-y-3">
-                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Situation Summary</h3>
-                    <p className="text-lg text-white leading-relaxed font-medium">
+                    <h3 className="text-sm font-black text-text-main/40 uppercase tracking-widest">Situation Summary</h3>
+                    <p className="text-lg text-text-main leading-relaxed font-bold border-l-4 border-brand-primary pl-4">
                       {analysisResult.summary}
                     </p>
                   </div>
 
                   {/* Criticality */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                      <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Urgency Level</h3>
+                    <div className="bg-bg-base p-4 border-4 border-text-main">
+                      <h3 className="text-[10px] font-black text-text-main/40 uppercase tracking-widest mb-1">Urgency Level</h3>
                       <div className={cn(
-                        "text-xl font-bold uppercase",
-                        analysisResult.urgency?.level === 'critical' ? "text-red-500" : "text-brand-primary"
+                        "text-xl font-black uppercase",
+                        analysisResult.urgency?.level === 'critical' ? "text-red-600" : "text-brand-secondary"
                       )}>
                         {analysisResult.urgency?.level || "Unknown"}
                       </div>
                     </div>
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                      <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Emergency Type</h3>
-                      <div className="text-xl font-bold text-white capitalize">
+                    <div className="bg-bg-base p-4 border-4 border-text-main">
+                      <h3 className="text-[10px] font-black text-text-main/40 uppercase tracking-widest mb-1">Emergency Type</h3>
+                      <div className="text-xl font-black text-text-main capitalize">
                         {analysisResult.emergencyType?.replace('_', ' ') || "Unknown"}
                       </div>
                     </div>
@@ -278,26 +278,26 @@ export default function Report() {
 
                   {/* Location */}
                   <div className="space-y-3">
-                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                    <h3 className="text-sm font-black text-text-main/40 uppercase tracking-widest flex items-center gap-2">
                       <MapPin className="w-4 h-4" />
                       Detected Location
                     </h3>
-                    <div className="bg-white/5 p-4 rounded-2xl border border-white/5">
-                      <p className="text-white font-medium">{analysisResult.location?.structuredAddress || "Address not detected"}</p>
-                      <p className="text-xs text-slate-500 mt-1 italic">"{analysisResult.location?.rawDescription}"</p>
+                    <div className="bg-bg-base p-4 border-4 border-text-main">
+                      <p className="text-text-main font-bold">{analysisResult.location?.structuredAddress || "Address not detected"}</p>
+                      <p className="text-xs text-text-main/60 mt-1 italic font-bold">"{analysisResult.location?.rawDescription}"</p>
                     </div>
                   </div>
 
                   {/* Victims */}
                   <div className="space-y-3">
-                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Victim Assessment</h3>
+                    <h3 className="text-sm font-black text-text-main/40 uppercase tracking-widest">Victim Assessment</h3>
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary font-bold text-xl">
+                      <div className="w-12 h-12 bg-brand-primary border-4 border-text-main shadow-[4px_4px_0px_0px_#1C293C] flex items-center justify-center text-text-main font-black text-xl">
                         {analysisResult.victims?.estimatedCount || "?"}
                       </div>
                       <div>
-                        <p className="text-white font-medium">Estimated Victims</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-text-main font-black uppercase">Estimated Victims</p>
+                        <p className="text-xs text-text-main/60 font-bold">
                           {analysisResult.victims?.pediatricInvolved ? "⚠️ Pediatric involvement detected" : "No pediatric flags"}
                         </p>
                       </div>
@@ -323,11 +323,11 @@ export default function Report() {
             </div>
 
             {analysisResult && (
-              <div className="p-6 border-t border-white/5 bg-white/5">
+              <div className="p-6 border-t-4 border-text-main bg-bg-base">
                 <button 
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="w-full btn-primary py-4 flex items-center justify-center gap-3"
+                  className="w-full btn-primary py-6 flex items-center justify-center gap-3 uppercase tracking-wider text-xl"
                 >
                   {isSubmitting ? (
                     <>
@@ -336,8 +336,8 @@ export default function Report() {
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="w-5 h-5" />
-                      Confirm & Submit Incident
+                      <CheckCircle2 className="w-6 h-6" />
+                      Confirm & Submit
                     </>
                   )}
                 </button>

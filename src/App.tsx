@@ -41,8 +41,20 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        const userProfile = await getUserProfile(firebaseUser.uid);
-        setProfile(userProfile);
+        try {
+          const userProfile = await getUserProfile(firebaseUser.uid);
+          setProfile(userProfile);
+        } catch (error: any) {
+          // Firestore may be offline (e.g. sandboxed environment or no network).
+          // Don't block the UI — the user is authenticated, profile defaults to null.
+          const isOffline =
+            error?.code === 'unavailable' ||
+            (error?.message ?? '').toLowerCase().includes('offline');
+          if (!isOffline) {
+            console.error('Failed to load user profile:', error);
+          }
+          setProfile(null);
+        }
       } else {
         setProfile(null);
       }
@@ -54,10 +66,12 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-bg-void">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-400 font-display animate-pulse">Initializing Gemini Bridge...</p>
+      <div className="h-screen w-screen flex items-center justify-center bg-bg-base">
+        <div className="flex flex-col items-center gap-6">
+          <div className="w-20 h-20 bg-brand-primary border-8 border-text-main shadow-[12px_12px_0px_0px_#1C293C] animate-spin flex items-center justify-center">
+            <div className="w-8 h-8 bg-bg-surface border-4 border-text-main shadow-[4px_4px_0px_0px_#1C293C]"></div>
+          </div>
+          <p className="text-text-main font-display font-black text-xl tracking-widest uppercase border-4 border-text-main px-6 py-2 bg-bg-surface shadow-[6px_6px_0px_0px_#1C293C] animate-pulse">Initializing Bridge</p>
         </div>
       </div>
     );

@@ -102,12 +102,12 @@ export default function IncidentDetail() {
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="p-2 bg-white/5 border border-white/10 rounded-xl text-slate-400 hover:text-white transition-colors">
-            <ArrowLeft className="w-5 h-5" />
+          <Link to="/dashboard" className="p-3 bg-bg-surface border-4 border-text-main shadow-[4px_4px_0px_0px_#1C293C] text-text-main hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_#1C293C] transition-all">
+            <ArrowLeft className="w-5 h-5 stroke-[3]" />
           </Link>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-white">INC-{incident.id.slice(0, 8).toUpperCase()}</h1>
+              <h1 className="text-3xl font-black text-text-main uppercase tracking-tight">INC-{incident.id.slice(0, 8).toUpperCase()}</h1>
               <div className={cn(
                 "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border",
                 getCriticalityColor(incident.criticalityLevel)
@@ -115,8 +115,8 @@ export default function IncidentDetail() {
                 {incident.criticalityLevel}
               </div>
             </div>
-            <p className="text-slate-400 mt-1 flex items-center gap-2">
-              <Clock className="w-4 h-4" />
+            <p className="text-text-main/60 mt-1 flex items-center gap-2 font-bold uppercase text-xs tracking-wider">
+              <Clock className="w-4 h-4 stroke-[2.5]" />
               Reported {formatDate(incident.createdAt)}
             </p>
           </div>
@@ -129,10 +129,10 @@ export default function IncidentDetail() {
           {incident.status !== IncidentStatus.RESOLVED && (
             <button 
               onClick={handleResolve}
-              className="px-6 py-2 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition-all flex items-center gap-2"
+              className="px-8 py-3 bg-crit-low text-white font-black uppercase border-4 border-text-main shadow-[4px_4px_0px_0px_#1C293C] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[8px_8px_0px_0px_#1C293C] active:translate-y-0 active:translate-x-0 active:shadow-none transition-all flex items-center gap-2"
             >
-              <CheckCircle2 className="w-4 h-4" />
-              Resolve Incident
+              <CheckCircle2 className="w-5 h-5 stroke-[3]" />
+              Mark Resolved
             </button>
           )}
         </div>
@@ -142,48 +142,48 @@ export default function IncidentDetail() {
         {/* Left Column: Overview */}
         <div className="lg:col-span-2 space-y-8">
           <GlassCard className="space-y-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-white/5 pb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-b-4 border-text-main pb-8">
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Emergency Type</p>
-                <p className="text-lg font-bold text-white capitalize">{incident.emergencyType?.replace('_', ' ')}</p>
+                <p className="text-[10px] font-black text-text-main/40 uppercase tracking-widest">Emergency Type</p>
+                <p className="text-lg font-black text-text-main uppercase">{incident.emergencyType?.replace('_', ' ')}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Victims</p>
-                <p className="text-lg font-bold text-white">~{incident.geminiAnalysis?.victims?.estimatedCount || "Unknown"}</p>
+                <p className="text-[10px] font-black text-text-main/40 uppercase tracking-widest">Victims</p>
+                <p className="text-lg font-black text-text-main">~{incident.geminiAnalysis?.victims?.estimatedCount || "Unknown"}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Location</p>
-                <p className="text-lg font-bold text-white truncate">{incident.locationAddress || "Unknown"}</p>
+                <p className="text-[10px] font-black text-text-main/40 uppercase tracking-widest">Location</p>
+                <p className="text-lg font-black text-text-main truncate">{incident.locationAddress || "Unknown"}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</p>
-                <p className="text-lg font-bold text-brand-primary capitalize">{incident.status}</p>
+                <p className="text-[10px] font-black text-text-main/40 uppercase tracking-widest">Status</p>
+                <p className="text-lg font-black text-brand-secondary uppercase">{incident.status}</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Zap className="w-5 h-5 text-brand-primary" />
-                AI Intelligence Summary
+              <h2 className="text-xl font-black text-text-main flex items-center gap-3 uppercase tracking-tight">
+                <Zap className="w-6 h-6 text-brand-primary fill-brand-primary" />
+                Intelligence Summary
               </h2>
-              <p className="text-lg text-slate-300 leading-relaxed italic">
+              <p className="text-lg text-text-main leading-relaxed font-bold border-l-8 border-brand-primary pl-6 italic">
                 "{incident.summary}"
               </p>
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Media Evidence</h2>
+              <h2 className="text-sm font-black text-text-main/40 uppercase tracking-widest">Media Evidence</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {incident.mediaUrls.map((url, i) => (
-                  <div key={i} className="aspect-square bg-white/5 rounded-2xl border border-white/5 overflow-hidden group cursor-pointer relative">
-                    <img src={url} alt="evidence" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <ImageIcon className="w-6 h-6 text-white" />
+                  <div key={i} className="aspect-square bg-bg-base border-4 border-text-main overflow-hidden group cursor-pointer relative shadow-[4px_4px_0px_0px_#1C293C] transition-all hover:translate-y-1 hover:translate-x-1 hover:shadow-none">
+                    <img src={url} alt="evidence" className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
+                    <div className="absolute inset-x-0 bottom-0 py-1 bg-brand-primary border-t-4 border-text-main opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <ImageIcon className="w-4 h-4 text-text-main fill-text-main" />
                     </div>
                   </div>
                 ))}
                 {incident.mediaUrls.length === 0 && (
-                  <div className="col-span-full py-8 text-center text-slate-600 text-sm italic">
+                  <div className="col-span-full py-12 text-center text-text-main/30 font-bold uppercase tracking-widest text-sm border-4 border-dashed border-text-main/20">
                     No media evidence attached.
                   </div>
                 )}
@@ -193,19 +193,19 @@ export default function IncidentDetail() {
 
           {/* Action Plan */}
           <GlassCard className="space-y-6">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-500" />
+            <h2 className="text-xl font-black text-text-main flex items-center gap-3 uppercase tracking-tight">
+              <CheckCircle2 className="w-6 h-6 text-crit-low stroke-[3]" />
               AI Action Plan
             </h2>
             <div className="space-y-4">
               {incident.geminiAnalysis?.actionPlan?.map((action: any, i: number) => (
-                <div key={i} className="flex gap-4 p-4 bg-white/5 rounded-2xl border border-white/5">
-                  <div className="w-8 h-8 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary font-bold flex-shrink-0">
+                <div key={i} className="flex gap-4 p-6 bg-bg-base border-4 border-text-main hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#1C293C] transition-all">
+                  <div className="w-10 h-10 bg-brand-primary border-4 border-text-main flex items-center justify-center text-text-main font-black flex-shrink-0">
                     {action.priority}
                   </div>
                   <div>
-                    <p className="text-white font-bold">{action.action}</p>
-                    <p className="text-sm text-slate-400 mt-1">{action.reasoning}</p>
+                    <p className="text-text-main font-black uppercase tracking-tight">{action.action}</p>
+                    <p className="text-sm text-text-main/70 mt-1 font-bold">{action.reasoning}</p>
                   </div>
                 </div>
               ))}
@@ -217,8 +217,8 @@ export default function IncidentDetail() {
         <div className="space-y-8">
           <GlassCard className="flex flex-col items-center text-center py-8">
             <CriticalityMeter score={incident.criticalityScore} level={incident.criticalityLevel} />
-            <h2 className="text-xl font-bold text-white mt-6">Criticality Intelligence</h2>
-            <p className="text-sm text-slate-500 mt-2 px-6">
+            <h2 className="text-xl font-black text-text-main mt-6 uppercase tracking-tight">Intelligence</h2>
+            <p className="text-sm text-text-main/60 mt-2 px-6 font-bold">
               {incident.geminiAnalysis?.urgency?.reasoning}
             </p>
             <div className="w-full mt-8 px-6">
@@ -227,50 +227,50 @@ export default function IncidentDetail() {
           </GlassCard>
 
           <GlassCard className="space-y-6">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Send className="w-5 h-5 text-brand-primary" />
-              Dispatch Actions
+            <h2 className="text-lg font-black text-text-main flex items-center gap-3 uppercase tracking-tight">
+              <Send className="w-6 h-6 text-brand-primary fill-brand-primary" />
+              Dispatch
             </h2>
             <div className="space-y-3">
               <button 
                 onClick={handleDraftDispatch}
                 disabled={isDrafting}
-                className="w-full btn-primary py-3 flex items-center justify-center gap-2"
+                className="w-full btn-primary py-6 flex items-center justify-center gap-3 uppercase tracking-wider text-xl"
               >
                 {isDrafting ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-6 h-6 animate-spin" />
                 ) : (
                   <>
-                    <Zap className="w-5 h-5" />
-                    Draft AI Dispatch
+                    <Zap className="w-6 h-6 fill-text-main" />
+                    Draft Dispatch
                   </>
                 )}
               </button>
-              <p className="text-[10px] text-center text-slate-500">
-                Human-in-the-loop confirmation required before sending.
+              <p className="text-[10px] text-center text-text-main/40 font-black uppercase tracking-widest">
+                Human Review Required
               </p>
             </div>
           </GlassCard>
 
-          <GlassCard className="space-y-4">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Download className="w-5 h-5 text-slate-400" />
-              Export Data
+          <GlassCard className="space-y-6">
+            <h2 className="text-lg font-black text-text-main flex items-center gap-3 uppercase tracking-tight">
+              <Download className="w-6 h-6 text-text-main/40" />
+              Export
             </h2>
-            <div className="space-y-2">
-              <button className="w-full px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm text-slate-300 flex items-center justify-between transition-all">
+            <div className="space-y-3">
+              <button className="w-full px-6 py-3 bg-bg-base border-4 border-text-main text-sm text-text-main font-black uppercase tracking-widest flex items-center justify-between hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#1C293C] transition-all">
                 <span className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  HL7 FHIR JSON
+                  <FileText className="w-4 h-4 stroke-[3]" />
+                  HL7 FHIR
                 </span>
-                <Download className="w-3 h-3" />
+                <Download className="w-3 h-3 stroke-[3]" />
               </button>
-              <button className="w-full px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm text-slate-300 flex items-center justify-between transition-all">
+              <button className="w-full px-6 py-3 bg-bg-base border-4 border-text-main text-sm text-text-main font-black uppercase tracking-widest flex items-center justify-between hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_0px_#1C293C] transition-all">
                 <span className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4" />
-                  EDXL-CAP Alert
+                  <AlertTriangle className="w-4 h-4 stroke-[3]" />
+                  EDXL-CAP
                 </span>
-                <Download className="w-3 h-3" />
+                <Download className="w-3 h-3 stroke-[3]" />
               </button>
             </div>
           </GlassCard>

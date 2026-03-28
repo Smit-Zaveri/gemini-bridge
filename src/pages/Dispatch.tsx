@@ -72,13 +72,13 @@ export default function DispatchPage() {
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Dispatch Command Center</h1>
-          <p className="text-slate-400 mt-1">Human-in-the-loop emergency communication queue</p>
+          <h1 className="text-3xl font-black text-text-main uppercase">Dispatch Command Center</h1>
+          <p className="text-text-main/60 font-bold mt-1">Human-in-the-loop emergency communication queue</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-500 text-sm font-bold flex items-center gap-2">
-            <AlertCircle className="w-4 h-4" />
-            {pendingDispatches.length} Awaiting Confirmation
+          <div className="px-6 py-3 bg-brand-primary border-4 border-text-main shadow-[4px_4px_0px_0px_#1C293C] text-text-main text-sm font-black uppercase tracking-wider flex items-center gap-2">
+            <AlertCircle className="w-5 h-5 fill-text-main" />
+            {pendingDispatches.length} Awaiting
           </div>
         </div>
       </div>
@@ -87,16 +87,16 @@ export default function DispatchPage() {
         {/* Pending Queue */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Send className="w-5 h-5 text-brand-primary" />
+            <h2 className="text-xl font-black text-text-main flex items-center gap-2 uppercase tracking-tight">
+              <Send className="w-6 h-6 text-brand-primary fill-brand-primary" />
               Active Draft Queue
             </h2>
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-slate-500" />
+              <Filter className="w-4 h-4 text-text-main/50" />
               <select 
                 value={filter}
                 onChange={(e) => setFilter(e.target.value as any)}
-                className="bg-bg-elevated border border-white/5 rounded-lg px-3 py-1 text-xs text-slate-400 focus:outline-none"
+                className="bg-bg-surface border-4 border-text-main px-4 py-1 text-xs text-text-main font-bold focus:outline-none focus:shadow-[2px_2px_0px_0px_#1C293C] transition-all"
               >
                 <option value="all">All Status</option>
                 <option value={DispatchStatus.DRAFTED}>Pending</option>
@@ -110,12 +110,12 @@ export default function DispatchPage() {
               <Loader2 className="w-8 h-8 animate-spin text-brand-primary" />
             </div>
           ) : pendingDispatches.length === 0 ? (
-            <GlassCard className="p-12 text-center text-slate-500">
-              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="w-8 h-8 text-green-500" />
+            <GlassCard className="p-16 text-center text-text-main/40 border-dashed">
+              <div className="w-16 h-16 bg-bg-base border-4 border-text-main flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 className="w-8 h-8 text-crit-low" />
               </div>
-              <p className="text-lg font-bold text-white mb-1">Queue Clear</p>
-              <p className="text-sm">No dispatch drafts awaiting confirmation.</p>
+              <p className="text-2xl font-black text-text-main uppercase mb-2">Queue Clear</p>
+              <p className="font-bold">No dispatch drafts awaiting confirmation.</p>
             </GlassCard>
           ) : (
             <div className="space-y-6">
@@ -134,30 +134,30 @@ export default function DispatchPage() {
         {/* History Log */}
         <div className="space-y-6">
           <div className="flex items-center gap-2 mb-4">
-            <History className="w-5 h-5 text-slate-500" />
-            <h2 className="text-xl font-bold text-white">Sent Log</h2>
+            <History className="w-6 h-6 text-text-main/40" />
+            <h2 className="text-xl font-black text-text-main uppercase tracking-tight">Sent Log</h2>
           </div>
 
           <GlassCard className="p-0 overflow-hidden">
-            <div className="divide-y divide-white/5 max-h-[700px] overflow-y-auto">
+            <div className="divide-y-4 divide-text-main max-h-[700px] overflow-y-auto">
               {sentDispatches.length === 0 ? (
-                <div className="p-8 text-center text-slate-500 text-sm">
+                <div className="p-12 text-center text-text-main/40 font-bold uppercase tracking-wider text-sm">
                   No dispatches sent yet.
                 </div>
               ) : (
                 sentDispatches.map((dispatch) => (
-                  <div key={dispatch.id} className="p-4 hover:bg-white/5 transition-colors">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-bold text-green-500 uppercase tracking-widest flex items-center gap-1">
+                  <div key={dispatch.id} className="p-6 hover:bg-brand-primary/10 transition-colors bg-bg-surface">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-2 py-0.5 bg-crit-low text-white text-[10px] font-black uppercase tracking-widest border-2 border-text-main shadow-[2px_2px_0px_0px_#1C293C] flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3" />
                         Sent
                       </span>
-                      <span className="text-[10px] text-slate-500">{formatDate(dispatch.createdAt)}</span>
+                      <span className="text-[10px] font-black text-text-main/40">{formatDate(dispatch.createdAt)}</span>
                     </div>
-                    <p className="text-xs font-bold text-white mb-1">{dispatch.service}</p>
-                    <p className="text-[11px] text-slate-400 line-clamp-2 italic">"{dispatch.message}"</p>
-                    <div className="mt-2 flex items-center justify-between text-[10px] text-slate-500">
-                      <span>ID: {dispatch.incidentId}</span>
+                    <p className="text-sm font-black text-text-main border-l-4 border-brand-primary pl-3 mb-2 uppercase">{dispatch.service}</p>
+                    <p className="text-xs font-bold text-text-main/70 line-clamp-2 italic">"{dispatch.message}"</p>
+                    <div className="mt-4 flex items-center justify-between text-[10px] font-black text-text-main/40 uppercase tracking-tighter">
+                      <span>ID: {dispatch.incidentId?.slice(0, 8)}</span>
                       <span>By: {dispatch.confirmedBy?.slice(0, 6)}</span>
                     </div>
                   </div>

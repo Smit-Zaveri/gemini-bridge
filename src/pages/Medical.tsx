@@ -58,12 +58,12 @@ export default function Medical() {
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Medical Intelligence Portal</h1>
-          <p className="text-slate-400 mt-1">Parse messy medical documents into structured emergency data</p>
+          <h1 className="text-3xl font-black text-text-main uppercase">Medical Intelligence Portal</h1>
+          <p className="text-text-main/60 font-bold mt-1">Parse messy medical documents into structured emergency data</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary text-sm font-semibold">
+        <div className="flex items-center gap-2 px-6 py-3 bg-brand-primary border-4 border-text-main shadow-[4px_4px_0px_0px_#1C293C] text-text-main text-sm font-black uppercase tracking-wider">
           <ShieldCheck className="w-4 h-4" />
-          HIPAA Compliant Processing
+          HIPAA Compliant
         </div>
       </div>
 
@@ -71,8 +71,8 @@ export default function Medical() {
         {/* Upload Panel */}
         <div className="space-y-6">
           <GlassCard className="space-y-6">
-            <div className="flex items-center gap-3 text-white font-bold border-b border-white/5 pb-4">
-              <FileText className="w-5 h-5 text-brand-primary" />
+            <div className="flex items-center gap-3 text-text-main font-black uppercase border-b-4 border-text-main pb-4">
+              <FileText className="w-5 h-5 text-brand-primary fill-brand-primary" />
               Document Upload
             </div>
             <p className="text-sm text-slate-400">
@@ -87,7 +87,7 @@ export default function Medical() {
           <button 
             onClick={handleAnalyze}
             disabled={isAnalyzing || files.length === 0}
-            className="w-full btn-primary py-4 text-lg flex items-center justify-center gap-3"
+            className="w-full btn-primary py-6 text-xl flex items-center justify-center gap-3 uppercase tracking-wider"
           >
             {isAnalyzing ? (
               <>
@@ -96,18 +96,18 @@ export default function Medical() {
               </>
             ) : (
               <>
-                <Zap className="w-6 h-6" />
-                Analyze Medical Records
+                <Zap className="w-6 h-6 fill-text-main" />
+                Analyze records
               </>
             )}
           </button>
 
-          <div className="bg-bg-elevated border border-white/5 p-6 rounded-2xl space-y-4">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Info className="w-4 h-4 text-brand-primary" />
+          <div className="bg-bg-base border-4 border-text-main p-6 space-y-4">
+            <h3 className="text-sm font-black text-text-main flex items-center gap-2 uppercase">
+              <Info className="w-4 h-4 text-brand-secondary" />
               How it works
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-text-main/70 leading-relaxed font-bold">
               Gemini Bridge uses long-context AI to read through multiple pages of medical history. It identifies critical life-safety information like allergies and medications that are vital for first responders in the field.
             </p>
           </div>
@@ -119,9 +119,9 @@ export default function Medical() {
             "h-full min-h-[600px] flex flex-col transition-all duration-500",
             !analysisResult && "opacity-50 grayscale"
           )}>
-            <div className="p-6 border-b border-white/5 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Stethoscope className="w-5 h-5 text-brand-primary" />
+            <div className="p-6 border-b-4 border-text-main flex items-center justify-between">
+              <h2 className="text-xl font-black text-text-main flex items-center gap-2 uppercase">
+                <Stethoscope className="w-5 h-5 text-brand-primary fill-brand-primary" />
                 Medical Intelligence Summary
               </h2>
             </div>
@@ -129,10 +129,10 @@ export default function Medical() {
             <div className="flex-1 p-6 overflow-y-auto">
               {!analysisResult ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
-                    <AlertCircle className="w-8 h-8 text-slate-600" />
+                  <div className="w-16 h-16 bg-bg-base border-4 border-text-main flex items-center justify-center">
+                    <AlertCircle className="w-8 h-8 text-text-main/40" />
                   </div>
-                  <p className="text-slate-500 max-w-xs">
+                  <p className="text-text-main/60 font-bold max-w-xs">
                     Upload medical documents on the left and click "Analyze" to generate a structured medical summary.
                   </p>
                 </div>

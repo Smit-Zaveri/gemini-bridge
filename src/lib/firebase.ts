@@ -1,13 +1,26 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import firebaseConfig from '../../firebase-applet-config.json';
+import { getAnalytics, isSupported } from 'firebase/analytics';
 
-const app = initializeApp(firebaseConfig);
+const firebaseConfig = {
+  apiKey: "AIzaSyB6J9l18kCHr9FXjqEvyz12CKMJ_k7Vuwg",
+  authDomain: "gemini-bridge-2458f.firebaseapp.com",
+  projectId: "gemini-bridge-2458f",
+  storageBucket: "gemini-bridge-2458f.firebasestorage.app",
+  messagingSenderId: "715540331504",
+  appId: "1:715540331504:web:d8cf6a13d2f2d14df97b35",
+  measurementId: "G-QK8Z9PRRWN"
+};
+
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const db = getFirestore(app);
 export const storage = getStorage(app);
+
+// Analytics
+export const analytics = typeof window !== 'undefined' ? isSupported().then((supported) => supported ? getAnalytics(app) : null) : Promise.resolve(null);
 
 export enum OperationType {
   CREATE = 'create',
